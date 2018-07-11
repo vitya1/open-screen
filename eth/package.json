@@ -1,0 +1,19 @@
+{
+  "dependencies": {
+    "nconf": "^0.10.0",
+    "openzeppelin-solidity": "1.10.0",
+    "solc": "^0.4.24",
+    "web3": "^1.0.0-beta.34"
+  },
+  "name": "eth",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
