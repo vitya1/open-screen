@@ -29,7 +29,7 @@ const abi_json = JSON.parse(abi.toString());
 
 const hesher_contract_addr = nconf.get('contract_address') || '0xf619A591958be008aE19b249A2Bc63e0697438C6';
 const hesher_contract = new web3.eth.Contract(abi_json, hesher_contract_addr, {
-    gasLimit: 150000 //default 90000
+    gasLimit: 120000
 });
 //console.log(hesher_contract.methods);
 //console.log(web3.eth.personal.getAccounts().then(res => console.log(res)));
