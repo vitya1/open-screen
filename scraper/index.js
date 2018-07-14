@@ -18,7 +18,7 @@ if(!nconf.get('web_sock') || !nconf.get('scraper_sock')) {
 zpush.connect(nconf.get('web_sock'));
 zpull.bindSync(nconf.get('scraper_sock'));
 
-sock_pull.on('message', async (msg) => {
+zpull.on('message', async (msg) => {
     let data = JSON.parse(msg.toString());
     if(!data.url) {
         console.log('Error. Message must have url property');
