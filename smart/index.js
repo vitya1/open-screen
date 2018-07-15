@@ -21,7 +21,7 @@ if(!nconf.get('password')) {
     process.exit();
 }
 
-const ipc_path = path.join(os.homedir(), (os.platform() == 'darwin' ? 'Library/Ethereum/' : '.ethereum/'), 'geth.ipc');
+const ipc_path = path.join(os.homedir(), (os.platform() === 'darwin' ? 'Library/Ethereum/' : '.ethereum/'), 'geth.ipc');
 const web3 = new Web3(new Web3.providers.IpcProvider(ipc_path, net));
 
 const abi = fs.readFileSync(path.join(__dirname, 'hesher_sol_ImgHesher.abi'));

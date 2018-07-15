@@ -1,20 +1,16 @@
 pragma solidity ^0.4.18;
 
-contract ImgHesher {
-	address internal owner;
-	uint8 public version;
+import 'github.com/OpenZeppelin/openzeppelin-solidity/contracts/ownership/Ownable.sol';
 
-	string[] public hashes;
-
-	constructor() public {
-		owner = msg.sender;
-		version = 1;
+contract ImgHesher is Ownable {
+	struct screenshot {
+		string url;
+		string hash;
 	}
 	
-	function push(string _hash) public {
-		require(msg.sender == owner);
-		hashes.push(_hash);
+	screenshot[] public hashes;
+	
+	function push(string _hash, string _url) public onlyOwner {
+		hashes.push(screenshot({hash: _hash, url: _url}));
 	}
 }
-
-//17.733684661
