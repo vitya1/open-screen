@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import axios from 'axios';
 import 'semantic-ui-vue';
 
 import 'semantic-ui-css/semantic.min.css';

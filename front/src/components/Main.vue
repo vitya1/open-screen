@@ -8,7 +8,6 @@
                     <div class="column">
                         <div class="ui fluid big input">
                             <input v-model="url" type="text" placeholder="http://example.com/copyright.html">
-                            &nbsp;
 
                             <button v-on:click="saveScreen" class="ui primary icon big button">
                                 <i class="camera retro icon"></i>&nbsp;Сделать скрин
@@ -66,8 +65,11 @@
                     url: this.url,
                     isBlockchain: this.isBlockchain
                 };
-                axios.post('/api/screen', data)
-                    .then(response => console.log(response));
+                axios.post('/api/screen/add', data)
+                    .then(response =>  {
+                        console.log(response);
+                        this.$router.push('/');
+                    });
             },
         }
     }

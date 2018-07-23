@@ -25,7 +25,7 @@ zpull.on('message', async (msg) => {
         return;
     }
 
-    let result = await (new scraper()).run(data.url, nconf.get('storage'));
+    let result = await (new scraper()).run(data.name, data.url, nconf.get('storage'));
     console.log('Scraping result', result);
     zpush.send(result);
 });

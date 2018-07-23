@@ -7,7 +7,10 @@
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "http": "^0.0.0",
+    "mongoose": "^5.2.4",
     "nconf": "^0.10.0",
+    "randomatic": "^3.0.0",
+    "vue-socket.io": "^2.1.1-b",
     "zeromq": "^4.6.0"
   }
 }

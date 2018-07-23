@@ -11,8 +11,7 @@ const archiver = require('archiver');
 
 class Scraper {
 
-    async run(url, save_dir) {
-        let name = this.generateName();
+    async run(name, url, save_dir) {
         let image_path = await this.saveScreenshot(url, path.join(save_dir, name));
 //        await this.download(url, path.join(save_dir, name));
 
@@ -24,10 +23,6 @@ class Scraper {
             image_path: image_path,
             image_hash: image_hash
         };
-    }
-
-    generateName() {
-        return randomatic('aA0', 12);
     }
 
     async saveScreenshot(url, name) {
