@@ -9,7 +9,7 @@
                         <div class="ui fluid big input">
                             <input v-model="url" type="text" placeholder="http://example.com/copyright.html">
 
-                            <button v-on:click="saveScreen" class="ui primary icon big button">
+                            <button v-on:click="saveScreen" :class="buttonClass">
                                 <i class="camera retro icon"></i>&nbsp;Сделать скрин
                             </button>
                         </div>
@@ -56,11 +56,13 @@
         data: function() {
             return {
                 url: '',
-                isBlockchain: false
+                isBlockchain: false,
+                buttonClass: 'ui primary icon big button'
             };
         },
         methods: {
             saveScreen() {
+                this.buttonClass += ' loading disabled';
                 let data = {
                     url: this.url,
                     isBlockchain: this.isBlockchain

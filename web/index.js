@@ -37,6 +37,7 @@ const app = express();
 const server = http.createServer(app);
 
 app.use(express.static(__dirname + '/public/'));
+app.use('/storage', express.static(path.join(__dirname, '../storage/')));
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
@@ -46,16 +47,8 @@ app.get('/', (req, res) => {
 
 app.post('/api/screen/add', (req, res) => {
     const name = randomatic('aA0', 12);
-    const shot = new Screen({
-        hash: name,
-        url: req.body.url,
-        creation_date: Date.now(),
-        creator_ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress
-    });
-    shot.save().then(() => console.log('screen saved'));
 
     //@todo check if valid url
-    console.log('push');
     scraper_push.send(JSON.stringify({
         name: name,
         url: req.body.url
@@ -64,24 +57,33 @@ app.post('/api/screen/add', (req, res) => {
     //@todo move to socket io
     scraper_pull.on('message', async (msg) => {
         let data = JSON.parse(msg.toString());
-        if(!data.url) {
-            console.log('Error. Message must have url property');
-            return;
-        }
         console.log('Scraping result', data);
-        //@todo save to mongo
 
-        res.status(200).send({
-            error: true,
-            data: data
+        const shot = new Screen({
+            hash: name,
+            url: req.body.url,
+            creation_date: Date.now(),
+            creator_ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress,
+            image_path: data['image_path'],
+            image_hash: data['image_hash']
+        });
+        shot.save().then(() => {
+            console.log('screen saved');
+            res.status(200).send({
+                error: false,
+                id: name
+            });
+        }).catch(e => {
+            res.status(200).send({
+                error: true
+            });
         });
     });
 
 });
 
-app.get('/api/screen', (req, res) => {
-    console.log(req.body);
-    Screen.findOne({'hash': req.body.hash}, (err, screenshot) => {
+app.get('/api/screen/:hash', (req, res) => {
+    Screen.findOne({'hash': req.params.hash}, (err, screenshot) => {
         if (err)  {
             res.status(404);
             res.send('404. Page does not exist');

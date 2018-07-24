@@ -10,7 +10,7 @@
         </div>
         <div class="ui segment" v-if="!loading">
 
-            <h1>{{hash}}</h1>
+            <h1>Скриншот №{{hash}}</h1>
             <div class="ui one column grid">
                 <table>
                     <thead>
@@ -18,15 +18,17 @@
                             <th>адрес страницы</th>
                             <th>дата создания</th>
                             <th>кем создан</th>
+                            <th>хеш картинки</th>
                             <th>номер транзакции</th>
                             <th>номер в блокчейн архиве</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>{{url}}</td>
-                            <td>{{creation_date}}</td>
+                            <td><a :href="url" target="_blank">{{url}}</a></td>
+                            <td>{{this.date()}}</td>
                             <td>{{creator_ip}}</td>
+                            <td>{{image_hash}}</td>
                             <td>{{transaction_id}}</td>
                             <td>{{blockchain_id}}</td>
                         </tr>
@@ -37,7 +39,7 @@
             </div>
             <div class="ui one column grid">
                 <div class="column">
-                    <img src="BFFdzUtb6goV.png">
+                    <img :src="image_path">
                 </div>
             </div>
         </div>
@@ -47,6 +49,7 @@
 
 <script>
     import axios from 'axios';
+    import moment from 'moment';
 
     export default {
         name: 'Detail',
@@ -56,24 +59,35 @@
                 url: '',
                 creator_ip: '',
                 creation_date: '',
-                hash: '',
+                hash: this.$route.params.id,
                 transaction_id: '',
                 blockchain_id: 0,
+                image_path: '',
+                image_hash: ''
             };
         },
         methods: {
             load: function() {
                 console.log(this.$route);
-                this.creator_ip = '127.0.0.1';
-                this.creation_date = Date.now();
-                this.hash = '837GF3HF918HE97G2';
-                this.blockchain_id = 34;
-                this.transaction_id = '90837wrfhwu4f87w3rghjwn37gfhj3wf8huwwf83hf83f83f';
-                this.url = 'www.google.com';
-                axios.get('/api/screen', {params: {id: this.$route.params.id}})
+                axios.get('/api/screen/' + this.hash)
                     .then(res => {
-                        console.log(res);
+                        console.log(res.data.data);
+                        this.loading = false;
+
+                        this.creator_ip = res.data.data['creator_ip'];
+                        this.creation_date = res.data.data['creation_date'];
+                        this.hash = res.data.data['hash'];
+                        this.url = res.data.data['url'];
+                        this.image_path = res.data.data['image_path'];
+                        this.image_hash = res.data.data['image_hash'];
+//                        this.blockchain_id = 34;
+//                        this.transaction_id = '90837wrfhwu4f87w3rghjwn37gfhj3wf8huwwf83hf83f83f';
                     });
+            },
+            date: function() {
+                return moment(this.creation_date)
+                    .locale('ru')
+                    .format('MMMM Do YYYY, hh:mm:ss');
             }
         },
         created: function() {
@@ -83,4 +97,10 @@
 </script>
 
 <style scoped>
+    img {
+        height: auto;
+        max-width: 100%;
+        vertical-align: middle;
+        border: 0;
+    }
 </style>
