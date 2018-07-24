@@ -63,13 +63,14 @@
         },
         methods: {
             load: function() {
+                console.log(this.$route);
                 this.creator_ip = '127.0.0.1';
                 this.creation_date = Date.now();
                 this.hash = '837GF3HF918HE97G2';
                 this.blockchain_id = 34;
                 this.transaction_id = '90837wrfhwu4f87w3rghjwn37gfhj3wf8huwwf83hf83f83f';
                 this.url = 'www.google.com';
-                axios.get('/api/screen', {id: '123'})
+                axios.get('/api/screen', {params: {id: this.$route.params.id}})
                     .then(res => {
                         console.log(res);
                     });

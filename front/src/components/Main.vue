@@ -67,8 +67,9 @@
                 };
                 axios.post('/api/screen/add', data)
                     .then(response =>  {
-                        console.log(response);
-                        this.$router.push('/');
+                        if(!response.error) {
+                            this.$router.push('/' + response.data.id);
+                        }
                     });
             },
         }

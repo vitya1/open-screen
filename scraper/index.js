@@ -17,15 +17,16 @@ if(!nconf.get('web_sock') || !nconf.get('scraper_sock')) {
 
 zpush.connect(nconf.get('web_sock'));
 zpull.bindSync(nconf.get('scraper_sock'));
+console.log('Pull sock', nconf.get('scraper_sock'));
 
 zpull.on('message', async (msg) => {
     let data = JSON.parse(msg.toString());
     if(!data.url) {
-        console.log('Error. Message must have url property');
+        console.log('Error. Message must have url');
         return;
     }
 
     let result = await (new scraper()).run(data.name, data.url, nconf.get('storage'));
     console.log('Scraping result', result);
-    zpush.send(result);
+    zpush.send(JSON.stringify(result));
 });
