@@ -27,7 +27,7 @@ const web3 = new Web3(new Web3.providers.IpcProvider(ipc_path, net));
 const abi = fs.readFileSync(path.join(__dirname, 'hesher_sol_ImgHesher.abi'));
 const abi_json = JSON.parse(abi.toString());
 
-const hesher_contract_addr = nconf.get('contract_address') || '0xf619A591958be008aE19b249A2Bc63e0697438C6';
+const hesher_contract_addr = nconf.get('contract_address');
 const hesher_contract = new web3.eth.Contract(abi_json, hesher_contract_addr, {
     gasLimit: 120000
 });

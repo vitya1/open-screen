@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const url = require('url');
 const http = require('http');
 const express = require('express');
 const zmq = require('zeromq');
@@ -48,7 +49,16 @@ app.get('/', (req, res) => {
 app.post('/api/screen/add', (req, res) => {
     const name = randomatic('aA0', 12);
 
-    //@todo check if valid url
+    try {
+        new URL(req.body.url);
+    }
+    catch(e) {
+        res.status(200).send({
+            error: true
+        });
+        return;
+    }
+
     scraper_push.send(JSON.stringify({
         name: name,
         url: req.body.url
