@@ -24,26 +24,36 @@ mongoose.connect(nconf.get('mongo_address'), {useNewUrlParser: true});
 
 const scraper_push = zmq.socket('push');
 const scraper_pull = zmq.socket('pull');
+const smart_push = zmq.socket('push');
+const smart_pull = zmq.socket('pull');
 
-if(!nconf.get('web_sock') || !nconf.get('scraper_sock')) {
-    console.log('Error. Your wallet password is not set');
+if(!nconf.get('scraper_pull') || !nconf.get('scraper_push')
+    || !nconf.get('smart_pull') || !nconf.get('smart_push')) {
+    console.log('Error. You must specify all socket variables');
     process.exit();
 }
 
-console.log('Push sock', nconf.get('scraper_sock'));
-scraper_push.connect(nconf.get('scraper_sock'));
-scraper_pull.bindSync(nconf.get('web_sock'));
+console.log('Scraper push sock', nconf.get('scraper_push'));
+console.log('Smart contract push sock', nconf.get('smart_push'));
+
+scraper_push.connect(nconf.get('scraper_push'));
+scraper_pull.bindSync(nconf.get('scraper_pull'));
+smart_push.connect(nconf.get('smart_push'));
+smart_pull.bindSync(nconf.get('smart_pull'));
 
 const app = express();
 const server = http.createServer(app);
 
-app.use(express.static(__dirname + '/public/'));
+app.use(express.static(path.join(__dirname, '../front/dist/')));
 app.use('/storage', express.static(path.join(__dirname, '../storage/')));
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-    res.send('ewr');
-//    res.render('index.html');
+    res.render(path.join(__dirname, '../front/dist/index.html'));
+});
+
+app.get('/about', (req, res) => {
+    res.render(path.join(__dirname, '../front/dist/index.html'));
 });
 
 app.post('/api/screen/add', (req, res) => {
@@ -65,7 +75,7 @@ app.post('/api/screen/add', (req, res) => {
     }));
 
     //@todo move to socket io
-    scraper_pull.on('message', async (msg) => {
+    scraper_pull.on('message', (msg) => {
         let data = JSON.parse(msg.toString());
         console.log('Scraping result', data);
 
@@ -78,6 +88,14 @@ app.post('/api/screen/add', (req, res) => {
             image_hash: data['image_hash']
         });
         shot.save().then(() => {
+            const url = req.protocol + '://' + req.get('host');
+            console.log(url);
+            smart_push.send(JSON.stringify({
+                hash: data['image_hash'],
+                url: url + '/' + name,
+                name: name
+            }));
+
             console.log('screen saved');
             res.status(200).send({
                 error: false,
@@ -115,3 +133,17 @@ server.listen(nconf.get('port'), nconf.get('host'), () => {
     console.log('start host: '+ nconf.get('host') + ' port: ' + nconf.get('port'));
 });
 
+smart_pull.on('message', (msg) => {
+    let data = JSON.parse(msg.toString());
+    console.log('Transaction result', data);
+    Screen.findOne({'hash': data[0]}, (err, screenshot) => {
+        if (err)  {
+            console.warn('Record not found');
+            return false;
+        }
+        const receipt = data[1];
+        screenshot.transaction_id = receipt['transactionHash'];
+        screenshot.transaction_data = JSON.stringify(receipt);
+        //screenshot.blockchain_id = Number,
+    });
+});

@@ -2,7 +2,9 @@
     <div>
         <div class="masthead">
             <h1 class="ui header">Copyright Keeper</h1>
-            <h4>Юридически правильные скриншоты</h4>
+            <h4>
+                Юридически правильные скриншоты
+            </h4>
             <div class="ui text container">
                 <div class="ui one column grid">
                     <div class="column">
@@ -43,7 +45,11 @@
                 </div>
             </div>
         </div>
-
+        <div class="one column center aligned">
+            <div class="column">
+                Класс восприятия судом: <b>A</b><small>&nbsp;B&nbsp;C&nbsp;D&nbsp;E&nbsp;F</small>
+            </div>
+        </div>
     </div>
 
 </template>

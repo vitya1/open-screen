@@ -20,17 +20,17 @@
                             <th>кем создан</th>
                             <th>хеш картинки</th>
                             <th>номер транзакции</th>
-                            <th>номер в блокчейн архиве</th>
+                            <!--<th>номер в блокчейн архиве</th>-->
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td><a :href="url" target="_blank">{{url}}</a></td>
-                            <td>{{this.date()}}</td>
+                            <td>{{date()}}</td>
                             <td>{{creator_ip}}</td>
                             <td>{{image_hash}}</td>
-                            <td>{{transaction_id}}</td>
-                            <td>{{blockchain_id}}</td>
+                            <td>{{transaction_id ? transaction_id : 'Выполняется транзакция...'}}</td>
+                            <!--<td>{{blockchain_id}}</td>-->
                         </tr>
                     </tbody>
                 </table>

@@ -9,6 +9,7 @@ const screen_schema = mongoose.Schema({
     creation_date: Number,
     transaction_id: String,
     blockchain_id: Number,
+    transaction_data: String
 });
 
 module.exports = mongoose.model('Screen', screen_schema);

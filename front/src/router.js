@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Main from '@/components/Main.vue'
 import Detail from '@/components/Detail.vue'
-import About from './views/About.vue'
+import About from '@/components/About.vue'
 
 Vue.use(Router);
 
