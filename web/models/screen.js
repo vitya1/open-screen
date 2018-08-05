@@ -7,8 +7,8 @@ const screen_schema = mongoose.Schema({
     image_hash: String,
     creator_ip: String,
     creation_date: Number,
-    transaction_id: String,
     blockchain_id: Number,
+    transaction_id: String,
     transaction_data: String
 });
 

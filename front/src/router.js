@@ -15,14 +15,14 @@ export default new Router({
           component: Main
       },
       {
-          path: '/:id',
-          name: 'view',
-          component: Detail
-      },
-      {
           path: '/about',
           name: 'about',
           component: About
+      },
+      {
+          path: '/:id',
+          name: 'view',
+          component: Detail
       }
     ]
 })

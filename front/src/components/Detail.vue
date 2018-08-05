@@ -8,7 +8,10 @@
             <p>123123</p>
             <p>123</p>
         </div>
-        <div class="ui segment" v-if="!loading">
+        <div class="ui segment" v-if="not_found">
+            <h1>Скриншот не найден :(</h1>
+        </div>
+        <div class="ui segment" v-if="!loading && !not_found">
 
             <h1>Скриншот №{{hash}}</h1>
             <div class="ui one column grid">
@@ -29,7 +32,12 @@
                             <td>{{date()}}</td>
                             <td>{{creator_ip}}</td>
                             <td>{{image_hash}}</td>
-                            <td>{{transaction_id ? transaction_id : 'Выполняется транзакция...'}}</td>
+                            <td v-if="transaction_id">
+                                <a target="_blank" :href="`https://rinkeby.etherscan.io/tx/${transaction_id}`">
+                                    {{transaction_id.substr(0, 10)}}...
+                                </a>
+                            </td>
+                            <td v-show="!transaction_id">в процессе...</td>
                             <!--<td>{{blockchain_id}}</td>-->
                         </tr>
                     </tbody>
@@ -56,6 +64,7 @@
         data: function() {
             return {
                 loading: true,
+                not_found: false,
                 url: '',
                 creator_ip: '',
                 creation_date: '',
@@ -73,6 +82,10 @@
                     .then(res => {
                         console.log(res.data.data);
                         this.loading = false;
+                        if(!res.data.data) {
+                            this.not_found = true;
+                            return;
+                        }
 
                         this.creator_ip = res.data.data['creator_ip'];
                         this.creation_date = res.data.data['creation_date'];
@@ -81,7 +94,7 @@
                         this.image_path = res.data.data['image_path'];
                         this.image_hash = res.data.data['image_hash'];
 //                        this.blockchain_id = 34;
-//                        this.transaction_id = '90837wrfhwu4f87w3rghjwn37gfhj3wf8huwwf83hf83f83f';
+                        this.transaction_id = res.data.data['transaction_id'];
                     });
             },
             date: function() {

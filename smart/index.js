@@ -48,9 +48,10 @@ const hesher_contract = new web3.eth.Contract(abi_json, hesher_contract_addr, {
 
 web3.eth.getAccounts().then(result => {
     let main_address = result[0];
-    web3.eth.personal.unlockAccount(main_address, nconf.get('account_password'))
-        .then(res => {
-            zpull.on('message', (msg) => {
+
+    zpull.on('message', (msg) => {
+        web3.eth.personal.unlockAccount(main_address, nconf.get('account_password'))
+            .then(res => {
                 let data = JSON.parse(msg.toString());
                 if(!data.url || !data.hash) {
                     console.log('Error. Message must have url and hash');
@@ -64,9 +65,9 @@ web3.eth.getAccounts().then(result => {
                         //@todo get number in blockchain array
                         zpush.send(JSON.stringify([data.name, receipt]));
                     }).catch(err => console.log('Transaction error', err));
-            });
 
-        }).catch(auth_err => console.log('Auth error', auth_err));
+            }).catch(auth_err => console.log('Auth error', auth_err));
+        });
 
 }).catch(err => console.log('Account error', err));
 

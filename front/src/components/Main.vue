@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="masthead">
-            <h1 class="ui header">Copyright Keeper</h1>
+            <h1 class="ui header">legalscreen.org</h1>
             <h4>
                 Юридически правильные скриншоты
             </h4>
@@ -18,8 +18,11 @@
                     </div>
                     <div class="column">
                         <div class="ui checkbox">
-                            <input type="checkbox" v-model="isBlockchain" id="isBlockchain">
-                            <label for="isBlockchain">Сохранить в блокчейне (всего 9 руб.)</label>
+                            <input disabled type="checkbox" v-model="isBlockchain" id="isBlockchain">
+                            <label for="isBlockchain">
+                                Сохранить в блокчейне <s>(всего 9 руб.)</s>
+                            </label>
+                            <span class="ui red label">FREE!</span>
                         </div>
                     </div>
                 </div>
@@ -62,7 +65,7 @@
         data: function() {
             return {
                 url: '',
-                isBlockchain: false,
+                isBlockchain: true,
                 buttonClass: 'ui primary icon big button'
             };
         },
@@ -88,8 +91,8 @@
     .masthead h1.ui.header {
         margin-top: 2em;
         margin-bottom: 0em;
-        font-size: 3em;
-        font-weight: normal;
+        font-size: 4em;
+        font-weight: bold;
     }
     .strip {
         padding: 8em 0em;

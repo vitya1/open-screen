@@ -56,6 +56,25 @@ app.get('/about', (req, res) => {
     res.render(path.join(__dirname, '../front/dist/index.html'));
 });
 
+app.get('/robots.txt', (req, res) => {
+    res.type('text/plain');
+    res.send('User-agent: *\nDisallow: /');
+});
+
+app.get('/api/screen/:hash', (req, res) => {
+    Screen.findOne({'hash': req.params.hash}, (err, screenshot) => {
+        if (err)  {
+            res.status(404);
+            res.send('404. Page does not exist');
+            return false;
+        }
+        res.status(200).send({
+            error: false,
+            data: screenshot
+        });
+    });
+});
+
 app.post('/api/screen/add', (req, res) => {
     const name = randomatic('aA0', 12);
 
@@ -110,20 +129,6 @@ app.post('/api/screen/add', (req, res) => {
 
 });
 
-app.get('/api/screen/:hash', (req, res) => {
-    Screen.findOne({'hash': req.params.hash}, (err, screenshot) => {
-        if (err)  {
-            res.status(404);
-            res.send('404. Page does not exist');
-            return false;
-        }
-        res.status(200).send({
-            error: false,
-            data: screenshot
-        });
-    });
-});
-
 app.use((req, res) => {
     res.status(404);
     res.send('404. Page does not exist');
@@ -145,5 +150,7 @@ smart_pull.on('message', (msg) => {
         screenshot.transaction_id = receipt['transactionHash'];
         screenshot.transaction_data = JSON.stringify(receipt);
         //screenshot.blockchain_id = Number,
+        screenshot.save().then(r => console.log('transaction hash saved'))
+            .catch(e => console.warn('Error saving transaction hash'));
     });
 });

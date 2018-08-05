@@ -1,9 +1,9 @@
 <template>
   <div id="app" class="ui container">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">Why this service?</router-link>
-      <span class="ui red tag label mini">Beta!</span>
+      <router-link to="/">Главная</router-link> |
+      <router-link to="/about">Почему legalscreen?</router-link>
+      <span class="ui orange tag label mini">Beta!</span>
     </div>
 
     <router-view/>
