@@ -6,9 +6,11 @@
   "license": "MIT",
   "dependencies": {
     "archiver": "^2.1.1",
+    "ipfs-api": "^23.0.0",
     "md5-file": "^4.0.0",
     "nconf": "^0.10.0",
     "puppeteer": "^1.6.0",
+    "randomatic": "^3.0.0",
     "uniqid": "^5.0.3",
     "uuid": "^3.3.2",
     "website-scraper": "^3.3.3",

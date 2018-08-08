@@ -20,7 +20,7 @@ export default new Router({
           component: About
       },
       {
-          path: '/:id',
+          path: '/v/:id',
           name: 'view',
           component: Detail
       }

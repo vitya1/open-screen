@@ -79,7 +79,7 @@
                 axios.post('/api/screen/add', data)
                     .then(response =>  {
                         if(!response.error) {
-                            this.$router.push('/' + response.data.id);
+                            this.$router.push('/v/' + response.data.id);
                         }
                     });
             },

@@ -49,11 +49,15 @@ app.use('/storage', express.static(path.join(__dirname, '../storage/')));
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-    res.render(path.join(__dirname, '../front/dist/index.html'));
+    res.sendFile(path.join(__dirname, '../front/dist/index.html'));
+});
+
+app.get('/v/:id', (req, res) => {
+    res.sendFile(path.join(__dirname, '../front/dist/index.html'));
 });
 
 app.get('/about', (req, res) => {
-    res.render(path.join(__dirname, '../front/dist/index.html'));
+    res.sendFile(path.join(__dirname, '../front/dist/index.html'));
 });
 
 app.get('/robots.txt', (req, res) => {

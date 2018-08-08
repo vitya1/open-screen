@@ -14,6 +14,13 @@
         <div class="ui segment" v-if="!loading && !not_found">
 
             <h1>Скриншот №{{hash}}</h1>
+            <br>
+            <div class="ui one column centered grid">
+                <div class="ui blue message">
+                    Не закрывайте окно, пока не сохраните ссылку!&nbsp;
+                </div>
+            </div>
+
             <div class="ui one column grid">
                 <table>
                     <thead>
@@ -28,7 +35,11 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><a :href="url" target="_blank">{{url}}</a></td>
+                            <td>
+                                <a :href="url" target="_blank">
+                                    {{url.substr(0, 30)}}{{url.length > 30 ? '...' : ''}}
+                                </a>
+                            </td>
                             <td>{{date()}}</td>
                             <td>{{creator_ip}}</td>
                             <td>{{image_hash}}</td>
