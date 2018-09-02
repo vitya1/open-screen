@@ -4,9 +4,9 @@
             <div class="ui active inverted dimmer">
                 <div class="ui huge text loader">Обработка запроса</div>
             </div>
-            <p>asdasd</p>
-            <p>123123</p>
-            <p>123</p>
+            <p>Confront chaos</p>
+            <p>Establish and revivify order</p>
+            <p>Constrain malevolence</p>
         </div>
         <div class="ui segment" v-if="not_found">
             <h1>Скриншот не найден :(</h1>
@@ -16,7 +16,7 @@
             <h1>Скриншот №{{hash}}</h1>
             <br>
             <div class="ui one column centered grid">
-                <div class="ui blue message">
+                <div class="ui red message">
                     Не закрывайте окно, пока не сохраните ссылку!&nbsp;
                 </div>
             </div>
@@ -25,7 +25,6 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>адрес страницы</th>
                             <th>дата создания</th>
                             <th>кем создан</th>
                             <th>хеш картинки</th>
@@ -35,11 +34,6 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>
-                                <a :href="url" target="_blank">
-                                    {{url.substr(0, 30)}}{{url.length > 30 ? '...' : ''}}
-                                </a>
-                            </td>
                             <td>{{date()}}</td>
                             <td>{{creator_ip}}</td>
                             <td>{{image_hash}}</td>
@@ -55,6 +49,13 @@
                 </table>
                 <div class="column">
                 </div>
+            </div>
+
+            <div class="ui centered one column grid">
+                <b>Url:&nbsp;</b>
+                <a :href="url" target="_blank">
+                    {{url.substr(0, 70)}}{{url.length > 70 ? '...' : ''}}
+                </a>
             </div>
             <div class="ui one column grid">
                 <div class="column">
@@ -111,7 +112,7 @@
             date: function() {
                 return moment(this.creation_date)
                     .locale('ru')
-                    .format('MMMM Do YYYY, hh:mm:ss');
+                    .format('Do MMMM YYYY, hh:mm:ss');
             }
         },
         created: function() {

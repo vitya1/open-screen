@@ -58,7 +58,7 @@ web3.eth.getAccounts().then(result => {
                     return;
                 }
 
-                hesher_contract.methods.push(data.hash, data.url)
+                hesher_contract.methods.push(data.url, data.hash, '')//data.archive_hash
                     .send({from: result[0]})
                 //    .estimateGas()
                     .then(receipt => {

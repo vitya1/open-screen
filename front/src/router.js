@@ -12,17 +12,26 @@ export default new Router({
       {
           path: '/',
           name: 'main',
-          component: Main
+          component: Main,
+          meta: {
+              title: 'Main Page - Legalscreen.org',
+          },
       },
       {
           path: '/about',
           name: 'about',
-          component: About
+          component: About,
+          meta: {
+              title: 'About Page - Legalscreen.org',
+          },
       },
       {
           path: '/v/:id',
           name: 'view',
-          component: Detail
+          component: Detail,
+          meta: {
+              title: 'Screen detail - Legalscreen.org',
+          },
       }
     ]
 })

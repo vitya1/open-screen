@@ -28,11 +28,47 @@
                 </div>
             </div>
         </div>
+
+        <div class="one column center aligned ui grid strip-top">
+            <h2>Как работает legalscreen</h2>
+        </div>
+        <div class="three column center aligned ui grid strip-bottom">
+            <div class="column step">
+                <p>
+                    1. Наш сервис сохраняет
+                    выбранную web страницу.
+                </p><br>
+                <img src="@/assets/images/step1.png" alt="">
+            </div>
+            <div class="column step">
+                <p>
+                    2. Уникальный хеш сохраненных
+                    данных сохраняется также в блокчейне.
+                    Там он в безопасности.
+                </p>
+                <img src="@/assets/images/step2.png" alt="">
+            </div>
+            <div class="column step">
+                <p>
+                    3. У вас есть подтверждение
+                    того как выглядела страница.
+                </p>
+                <img src="@/assets/images/step3.png" alt="">
+            </div>
+        </div>
+<!--
+
+        <div class="one column center aligned ui grid">
+            <div class="column">
+                Здесь должен быть великолепный текст
+            </div>
+        </div>
+
         <div class="three column divided stackable center aligned ui grid strip">
             <div class="column">
                 <div class="ui icon header">
                     <i class="ethereum icon"></i>
-                    Сохраняется в блокчейне. <small>Лучше чем высеченно на камне</small>
+                    С использованием технологии блокчейн.
                 </div>
             </div>
             <div class="column">
@@ -43,11 +79,13 @@
             </div>
             <div class="column">
                 <div class="ui icon header">
-                    <i class="mars double icon"></i>
-                    Подойдет даже пидорам
+                    <i class="github icon"></i>
+                    Open source
                 </div>
             </div>
         </div>
+-->
+
         <div class="one column center aligned">
             <div class="column">
                 Класс восприятия судом: <b>A</b><small>&nbsp;B&nbsp;C&nbsp;D&nbsp;E&nbsp;F</small>
@@ -94,7 +132,13 @@
         font-size: 4em;
         font-weight: bold;
     }
-    .strip {
-        padding: 8em 0em;
+    .strip-bottom {
+        padding-bottom: 7em;
+    }
+    .strip-top {
+        padding-top: 6em;
+    }
+    .step img {
+        max-height: 128px;
     }
 </style>
