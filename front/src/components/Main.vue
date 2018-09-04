@@ -64,7 +64,10 @@
             </div>
         </div>
 
-        <div class="three column divided stackable center aligned ui grid strip">
+        <div class="one column center aligned ui grid strip-top">
+            <h2>Больше чем просто скриншот</h2>
+        </div>
+        <div class="three column center aligned ui grid strip-bottom">
             <div class="column">
                 <div class="ui icon header">
                     <i class="ethereum icon"></i>

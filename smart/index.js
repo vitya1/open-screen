@@ -13,7 +13,14 @@ const zpull = zmq.socket('pull');
 
 nconf.argv()
     .env()
-    .file(path.join(__dirname, '.env.local'));
+    .file(path.join(__dirname, '.env.local'))
+    .defaults({
+        ipc_path: path.join(
+            os.homedir(),
+            (os.platform() === 'darwin' ? 'Library/Ethereum/' : '.ethereum/'),
+            'geth.ipc'
+        ),
+    });
 
 if(!nconf.get('web_sock') || !nconf.get('smart_sock')) {
     console.log('Error. Your socket parametres are not set');
@@ -33,7 +40,7 @@ if(!nconf.get('account_password')) {
     process.exit();
 }
 
-const ipc_path = path.join(os.homedir(), (os.platform() === 'darwin' ? 'Library/Ethereum/' : '.ethereum/'), 'geth.ipc');
+const ipc_path = nconf.get('ipc_path');
 const web3 = new Web3(new Web3.providers.IpcProvider(ipc_path, net));
 
 const abi = fs.readFileSync(path.join(__dirname, 'hesher_sol_ImgHesher.abi'));
