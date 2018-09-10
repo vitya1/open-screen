@@ -76,6 +76,10 @@ web3.eth.getTransactionCount(account_address).then(function(nonce) {
         transaction.sign(private_key);
 
         web3.eth.sendSignedTransaction('0x' + transaction.serialize().toString('hex'))
+            .then(result => {
+                console.log(result);
+                zpush.send(JSON.stringify([data.name, result]));
+            })
             .catch(err => console.log('Transaction error', err));
     });
 
