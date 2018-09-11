@@ -12,20 +12,22 @@ const archiver = require('archiver');
 class Scraper {
 
     async run(name, url, save_dir) {
-        let image_path = await this.saveScreenshot(url, path.join(save_dir, name));
-//        await this.download(url, path.join(save_dir, name));
-
+        let archive_path = await Scraper.saveZip(url, path.join(save_dir, name));
+        let image_path = await Scraper.saveScreen(url, path.join(save_dir, name));
         let image_hash = md5File.sync(image_path);
+        let archive_hash = md5File.sync(archive_path);
 
         return {
             url: url,
             name: name,
             image_path: image_path,
-            image_hash: image_hash
+            image_hash: image_hash,
+            archive_path: archive_path,
+            archive_hash: archive_hash,
         };
     }
 
-    async saveScreenshot(url, name) {
+    static async saveScreen(url, name) {
         try {
             const browser = await puppeteer.launch({
                 headless: true,
@@ -46,14 +48,15 @@ class Scraper {
         }
     }
 
-    async download(url, dir) {
+    static async saveZip(url, dir) {
         const options = {
             urls: [url],
             directory: dir,
         };
 
         await scrape(options);
-        const output = fs.createWriteStream(dir + '.zip');
+        const filename = dir + '.zip';
+        const output = fs.createWriteStream(filename);
         const archive = archiver('zip', {
             zlib: {level: 9}
         });
@@ -63,6 +66,7 @@ class Scraper {
 
         //todo rm directory
 
+        return filename;
     }
 }
 

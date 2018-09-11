@@ -56,8 +56,8 @@ web3.eth.getTransactionCount(account_address).then(function(nonce) {
     let count = nonce;
 
     zpull.on('message', (msg) => {
-        const data = JSON.parse(msg.toString());
-        if(!data.url || !data.hash) {
+        let data = JSON.parse(msg.toString());
+        if(!data.url && (!data.image_hash || !data.archive_hash)) {
             console.log('Error. Message must have url and hash');
             return;
         }
@@ -68,7 +68,7 @@ web3.eth.getTransactionCount(account_address).then(function(nonce) {
             'value': '0x0',
             'gasPrice': web3.utils.toHex(20 * 1e9),
             'gasLimit': web3.utils.toHex(240000),
-            'data': contract.methods.push(data.url, data.hash, '').encodeABI(),//data.archive_hash
+            'data': contract.methods.push(data.url, data.image_hash, data.archive_hash).encodeABI(),
             'nonce': web3.utils.toHex(count++),
         };
 
@@ -76,7 +76,7 @@ web3.eth.getTransactionCount(account_address).then(function(nonce) {
         transaction.sign(private_key);
 
         web3.eth.sendSignedTransaction('0x' + transaction.serialize().toString('hex'))
-            .then(result => {
+            .then((result) => {
                 console.log(result);
                 zpush.send(JSON.stringify([data.name, result]));
             })

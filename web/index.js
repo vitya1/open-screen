@@ -108,13 +108,16 @@ app.post('/api/screen/add', (req, res) => {
             creation_date: Date.now(),
             creator_ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress,
             image_path: data['image_path'],
-            image_hash: data['image_hash']
+            image_hash: data['image_hash'],
+            archive_path: data['archive_path'],
+            archive_hash: data['archive_hash'],
         });
         shot.save().then(() => {
             const url = req.protocol + '://' + req.get('host');
             console.log(url);
             smart_push.send(JSON.stringify({
-                hash: data['image_hash'],
+                image_hash: data['image_hash'],
+                archive_hash: data['archive_hash'],
                 url: url + '/' + name,
                 name: name
             }));
