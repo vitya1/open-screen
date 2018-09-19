@@ -21,39 +21,52 @@
                 </div>
             </div>
 
-            <div class="ui one column grid">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>дата создания</th>
-                            <th>кем создан</th>
-                            <th>хеш картинки</th>
-                            <th>номер транзакции</th>
-                            <!--<th>номер в блокчейн архиве</th>-->
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{{date()}}</td>
-                            <td>{{creator_ip}}</td>
-                            <td>{{image_hash}}</td>
-                            <td v-if="transaction_id">
-                                <a target="_blank" :href="`https://rinkeby.etherscan.io/tx/${transaction_id}`">
-                                    {{transaction_id.substr(0, 10)}}...
-                                </a>
-                            </td>
-                            <td v-show="!transaction_id">в процессе...</td>
-                            <!--<td>{{blockchain_id}}</td>-->
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="column">
+            <div class="ui grid">
+                <div class="row">
+                    <div class="twelve wide column">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>дата создания</th>
+                                <th>кем создан</th>
+                                <th>хеш картинки</th>
+                                <th>номер транзакции</th>
+                                <!--<th>номер в блокчейн архиве</th>-->
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>{{date()}}</td>
+                                <td>{{creator_ip}}</td>
+                                <td>{{image_hash}}</td>
+                                <td v-if="transaction_id">
+                                    <a target="_blank" :href="`https://rinkeby.etherscan.io/tx/${transaction_id}`">
+                                        {{transaction_id.substr(0, 10)}}...
+                                    </a>
+                                </td>
+                                <td v-show="!transaction_id">в процессе...</td>
+                                <!--<td>{{blockchain_id}}</td>-->
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="four wide column">
+                        <button class="ui primary button">
+                            <i class="download icon"></i>
+                            PDF
+                        </button>
+                        <button class="ui primary button">
+                            <i class="download icon"></i>
+                            Archive
+                        </button>
+                    </div>
                 </div>
+
             </div>
 
             <div class="ui centered one column grid">
                 <b>Url:&nbsp;</b>
-                <a :href="url" target="_blank">
+                <a :href="url">
                     {{url.substr(0, 70)}}{{url.length > 70 ? '...' : ''}}
                 </a>
             </div>

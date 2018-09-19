@@ -5,6 +5,8 @@ const screen_schema = mongoose.Schema({
     url: String,
     image_path: String,
     image_hash: String,
+    pdf_path: String,
+    pdf_hash: String,
     archive_path: String,
     archive_hash: String,
     creator_ip: String,

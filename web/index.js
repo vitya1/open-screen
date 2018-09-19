@@ -109,6 +109,8 @@ app.post('/api/screen/add', (req, res) => {
             creator_ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress,
             image_path: data['image_path'],
             image_hash: data['image_hash'],
+            pdf_path: data['pdf_path'],
+            pdf_hash: data['pdf_hash'],
             archive_path: data['archive_path'],
             archive_hash: data['archive_hash'],
         });
