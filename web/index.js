@@ -79,6 +79,35 @@ app.get('/api/screen/:hash', (req, res) => {
     });
 });
 
+function download(hash, res, property) {
+    Screen.findOne({'hash': hash}, (err, screenshot) => {
+        if(err || screenshot[property] === undefined) {
+            res.status(404);
+            res.send('404. Not found');
+            return false;
+        }
+        const file = path.resolve(__dirname, screenshot[property]);
+        fs.exists(file, function(exists) {
+            if(exists) {
+                res.download(file);
+            }
+            else {
+                res.status(404);
+                res.send('404. Not found');
+                return false;
+            }
+        });
+    });
+}
+
+app.get('/download/pdf/:hash', (req, res) => {
+    download(req.params.hash, res, 'pdf_path');
+});
+
+app.get('/download/zip/:hash', (req, res) => {
+    download(req.params.hash, res, 'archive_path');
+});
+
 app.post('/api/screen/add', (req, res) => {
     const name = randomatic('aA0', 12);
 

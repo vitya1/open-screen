@@ -14,10 +14,18 @@
         <div class="ui segment" v-if="!loading && !not_found">
 
             <h1>Скриншот №{{hash}}</h1>
-            <br>
+
             <div class="ui one column centered grid">
-                <div class="ui red message">
-                    Не закрывайте окно, пока не сохраните ссылку!&nbsp;
+                <div class="row">
+                    <div class="ui red message">
+                        Не закрывайте окно, пока не сохраните ссылку!&nbsp;
+                    </div>
+                </div>
+                <div class="row">
+                    <button class="ui red small basic button" data-tooltip="LegalScreen сообщит вам если сканируемая страница изменится. Функция будет доступна позже">
+                        <i class="mail icon"></i>
+                        Подписаться на изменения
+                    </button>
                 </div>
             </div>
 
@@ -51,14 +59,14 @@
                         </table>
                     </div>
                     <div class="four wide column">
-                        <button class="ui primary button">
+                        <a v-if="pdf_hash" :href="'/download/pdf/' + hash" target="_blank" class="ui primary button">
                             <i class="download icon"></i>
                             PDF
-                        </button>
-                        <button class="ui primary button">
+                        </a>
+                        <a v-if="archive_hash" :href="'/download/zip/' + hash" target="_blank" class="ui primary button">
                             <i class="download icon"></i>
                             Archive
-                        </button>
+                        </a>
                     </div>
                 </div>
 
@@ -97,7 +105,11 @@
                 transaction_id: '',
                 blockchain_id: 0,
                 image_path: '',
-                image_hash: ''
+                image_hash: '',
+                pdf_path: '',
+                pdf_hash: '',
+                archive_path: '',
+                archive_hash: ''
             };
         },
         methods: {
@@ -117,9 +129,17 @@
                         this.hash = res.data.data['hash'];
                         this.url = res.data.data['url'];
                         this.image_path = res.data.data['image_path'];
+                        this.pdf_path = res.data.data['pdf_path'];
+                        this.archive_path = res.data.data['archive_path'];
                         this.image_hash = res.data.data['image_hash'];
+                        this.pdf_hash = res.data.data['pdf_hash'];
+                        this.archive_hash = res.data.data['archive_hash'];
 //                        this.blockchain_id = 34;
                         this.transaction_id = res.data.data['transaction_id'];
+                    })
+                    .catch(() => {
+                        this.loading = false;
+                        this.not_found = true;
                     });
             },
             date: function() {
