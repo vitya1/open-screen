@@ -29,7 +29,7 @@ contract ImgHesher is Ownable {
 			url: _url,
 			image_hash: _image_hash,
 			archive_hash: _archive_hash,
-			pdf_hash_len: _archive_hash
+			pdf_hash: _pdf_hash
 		}));
 		
 		return count - 1;

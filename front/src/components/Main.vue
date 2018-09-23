@@ -122,6 +122,8 @@
                         if(!response.error) {
                             this.$router.push('/v/' + response.data.id);
                         }
+                    }).catch(() => {
+                        console.warn('Error saving data');
                     });
             },
         }

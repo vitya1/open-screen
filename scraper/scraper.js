@@ -7,6 +7,7 @@ const scrape = require('website-scraper');
 const puppeteer = require('puppeteer');
 const md5File = require('md5-file');
 const archiver = require('archiver');
+const rimraf = require('rimraf');
 
 
 class Scraper {
@@ -73,7 +74,8 @@ class Scraper {
         archive.directory(dir, false);
         archive.finalize();
 
-        //todo rm directory
+        //@todo fix
+        rimraf(dir, () => console.log('Directory ', dir, ' deleted'));
 
         return filename;
     }

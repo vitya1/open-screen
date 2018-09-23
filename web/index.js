@@ -43,9 +43,10 @@ smart_pull.bindSync(nconf.get('smart_pull'));
 
 const app = express();
 const server = http.createServer(app);
+const storage_rel_path = '../storage/';
 
 app.use(express.static(path.join(__dirname, '../front/dist/')));
-app.use('/storage', express.static(path.join(__dirname, '../storage/')));
+app.use('/storage', express.static(path.join(__dirname, storage_rel_path)));
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
@@ -72,6 +73,10 @@ app.get('/api/screen/:hash', (req, res) => {
             res.send('404. Page does not exist');
             return false;
         }
+        //@todo fix this
+        screenshot.image_path = storage_rel_path + 'i/' + screenshot.hash + '.png';
+        screenshot.archive_path = '';
+        screenshot.pdf_path = '';
         res.status(200).send({
             error: false,
             data: screenshot
@@ -149,6 +154,7 @@ app.post('/api/screen/add', (req, res) => {
             smart_push.send(JSON.stringify({
                 image_hash: data['image_hash'],
                 archive_hash: data['archive_hash'],
+                pdf_hash: data['pdf_hash'],
                 url: url + '/' + name,
                 name: name
             }));
@@ -159,6 +165,7 @@ app.post('/api/screen/add', (req, res) => {
                 id: name
             });
         }).catch(e => {
+            console.log(e);
             res.status(200).send({
                 error: true
             });
