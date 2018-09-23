@@ -75,7 +75,7 @@ class Scraper {
         archive.finalize();
 
         //@todo fix
-        rimraf(dir, () => console.log('Directory ', dir, ' deleted'));
+        //rimraf(dir, () => console.log('Directory ', dir, ' deleted'));
 
         return filename;
     }
