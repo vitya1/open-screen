@@ -67,7 +67,7 @@ web3.eth.getTransactionCount(account_address).then(function(nonce) {
             'to': contract_address,
             'value': '0x0',
             'gasPrice': web3.utils.toHex(20 * 1e9),
-            'gasLimit': web3.utils.toHex(240000),
+            'gasLimit': web3.utils.toHex(340000),
             'data': contract.methods.push(data.url, data.image_hash, data.pdf_hash, data.archive_hash).encodeABI(),
             'nonce': web3.utils.toHex(count++),
         };

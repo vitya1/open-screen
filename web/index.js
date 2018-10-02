@@ -155,7 +155,7 @@ app.post('/api/screen/add', (req, res) => {
                 image_hash: data['image_hash'],
                 archive_hash: data['archive_hash'],
                 pdf_hash: data['pdf_hash'],
-                url: url + '/' + name,
+                url: url + '/v/' + name,
                 name: name
             }));
 
