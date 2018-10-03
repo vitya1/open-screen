@@ -45,6 +45,8 @@ const app = express();
 const server = http.createServer(app);
 const storage_rel_path = '../storage/';
 
+let host_url = null;
+
 app.use(express.static(path.join(__dirname, '../front/dist/')));
 app.use('/storage', express.static(path.join(__dirname, storage_rel_path)));
 app.use(bodyParser.json());
@@ -115,9 +117,12 @@ app.get('/download/zip/:hash', (req, res) => {
 
 app.post('/api/screen/add', (req, res) => {
     const name = randomatic('aA0', 12);
+    if(!host_url) {
+        host_url = req.protocol + '://' + req.get('host');
+    }
 
     try {
-        new URL(req.body.url);
+        new url.URL(req.body.url);
     }
     catch(e) {
         res.status(200).send({
@@ -131,47 +136,25 @@ app.post('/api/screen/add', (req, res) => {
         url: req.body.url
     }));
 
-    //@todo move to socket io
-    scraper_pull.on('message', (msg) => {
-        let data = JSON.parse(msg.toString());
-        console.log('Scraping result', data);
-
-        const shot = new Screen({
-            hash: name,
-            url: req.body.url,
-            creation_date: Date.now(),
-            creator_ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress,
-            image_path: data['image_path'],
-            image_hash: data['image_hash'],
-            pdf_path: data['pdf_path'],
-            pdf_hash: data['pdf_hash'],
-            archive_path: data['archive_path'],
-            archive_hash: data['archive_hash'],
-        });
-        shot.save().then(() => {
-            const url = req.protocol + '://' + req.get('host');
-            console.log(url);
-            smart_push.send(JSON.stringify({
-                image_hash: data['image_hash'],
-                archive_hash: data['archive_hash'],
-                pdf_hash: data['pdf_hash'],
-                url: url + '/v/' + name,
-                name: name
-            }));
-
-            console.log('screen saved');
-            res.status(200).send({
-                error: false,
-                id: name
-            });
-        }).catch(e => {
-            console.log(e);
-            res.status(200).send({
-                error: true
-            });
-        });
+    const shot = new Screen({
+        hash: name,
+        url: req.body.url,
+        creator_ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress,
+        status: 0//@todo const
     });
 
+    shot.save().then(() => {
+        console.log('screen record saved');
+        res.status(200).send({
+            error: false,
+            id: name
+        });
+    }).catch(e => {
+        console.log(e);
+        res.status(200).send({
+            error: true
+        });
+    });
 });
 
 app.use((req, res) => {
@@ -181,6 +164,35 @@ app.use((req, res) => {
 
 server.listen(nconf.get('port'), nconf.get('host'), () => {
     console.log('start host: '+ nconf.get('host') + ' port: ' + nconf.get('port'));
+});
+
+scraper_pull.on('message', (msg) => {
+    let data = JSON.parse(msg.toString());
+    console.log('Scraping result', data);
+
+    Screen.findOne({'hash': data['name']}, (err, screenshot) => {
+        screenshot['creation_date'] = Date.now();
+        screenshot['status'] = 1;
+        screenshot['image_path'] = data['image_path'];
+        screenshot['image_hash'] = data['image_hash'];
+        screenshot['pdf_path'] = data['pdf_path'];
+        screenshot['pdf_hash'] = data['pdf_hash'];
+        screenshot['archive_path'] = data['archive_path'];
+        screenshot['archive_hash'] = data['archive_hash'];
+        screenshot.save().then(() => {
+            smart_push.send(JSON.stringify({
+                image_hash: data['image_hash'],
+                archive_hash: data['archive_hash'],
+                pdf_hash: data['pdf_hash'],
+                url: host_url + '/v/' + data['name'],
+                name: data['name']
+            }));
+            console.log('screen saved');
+        }).catch(e => {
+            console.log(e);
+
+        });
+    });
 });
 
 smart_pull.on('message', (msg) => {

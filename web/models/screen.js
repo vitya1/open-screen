@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const screen_schema = mongoose.Schema({
+    status: Number,
     hash: String,
     url: String,
     image_path: String,
