@@ -65,7 +65,14 @@ app.get('/about', (req, res) => {
 
 app.get('/robots.txt', (req, res) => {
     res.type('text/plain');
-    res.send('User-agent: *\nDisallow: /');
+    res.send('User-agent: *' +
+        '\nDisallow: /storage' +
+        '\nDisallow: /download' +
+        '\nDisallow: /api' +
+        '\nDisallow: /admin' +
+        '\nDisallow: /true_trust_trump' +
+        ''
+    );
 });
 
 app.get('/api/screen/:hash', (req, res) => {

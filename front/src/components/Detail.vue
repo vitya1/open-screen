@@ -6,7 +6,7 @@
                     <p v-show="!processing">Обработка запроса</p>
                     <p v-show="processing">
                         Обработка запроса.<br>
-                        <nobr>Сохранение страницы <a :href="url">{{url}}</a></nobr>
+                        <nobr>Сохранение страницы <a rel="nofollow" :href="url">{{url.substr(0, 30)}}{{url.length > 30 ? '...' : ''}}</a></nobr>
                         <transition name="slide-fade">
                             <span v-if="processing_png"> в <b>png</b> формате</span>
                         </transition>
@@ -38,7 +38,7 @@
                 indicating better calibration in high trait-anxious individuals. These results are discussed in light of
                 existing knowledge and models of the effect of anxiety on risk perception and decision-making.
                 <br>
-                <a target="_blank" href="https://www.apa.org/pubs/journals/features/xlm-0000210.pdf">https://www.apa.org/pubs/journals/features/xlm-0000210.pdf</a>
+                <a rel="nofollow" target="_blank" href="https://www.apa.org/pubs/journals/features/xlm-0000210.pdf">https://www.apa.org/pubs/journals/features/xlm-0000210.pdf</a>
             </div>
         </div>
         <div class="ui segment" v-if="not_found">
@@ -81,7 +81,7 @@
                                 <td>{{creator_ip}}</td>
                                 <td>{{image_hash}}</td>
                                 <td v-if="transaction_id">
-                                    <a target="_blank" :href="`https://rinkeby.etherscan.io/tx/${transaction_id}`">
+                                    <a rel="nofollow" target="_blank" :href="`https://rinkeby.etherscan.io/tx/${transaction_id}`">
                                         {{transaction_id.substr(0, 10)}}...
                                     </a>
                                 </td>
@@ -92,11 +92,11 @@
                         </table>
                     </div>
                     <div class="four wide column">
-                        <a v-if="pdf_hash" :href="'/download/pdf/' + hash" target="_blank" class="ui primary button">
+                        <a rel="nofollow" v-if="pdf_hash" :href="'/download/pdf/' + hash" target="_blank" class="ui primary button">
                             <i class="download icon"></i>
                             PDF
                         </a>
-                        <a v-if="archive_hash" :href="'/download/zip/' + hash" target="_blank" class="ui primary button">
+                        <a rel="nofollow" v-if="archive_hash" :href="'/download/zip/' + hash" target="_blank" class="ui primary button">
                             <i class="download icon"></i>
                             Archive
                         </a>
@@ -107,7 +107,7 @@
 
             <div class="ui centered one column grid">
                 <b>Url:&nbsp;</b>
-                <a :href="url">
+                <a :href="url" rel="nofollow">
                     {{url.substr(0, 70)}}{{url.length > 70 ? '...' : ''}}
                 </a>
             </div>
